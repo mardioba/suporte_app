@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}
+  Editar Setor
+{% endblock page_title %}
+  
+  {% block content %}
+    <h1>Editar Setor</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Salvar</button>
+    </form>
+    {% endblock content %}
+

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Atualizar Chamado{% endblock page_title %}
+
+{% block content %}
+<div class="container">
+    <h1>Atualizar Chamado</h1>
+    <form method="post"  class="row gy-2 gx-3 align-items-center">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="col-12">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

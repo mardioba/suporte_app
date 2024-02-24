@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Deleção de Chamado</title>
+</head>
+<body>
+    <h1>Confirmação de Deleção de Chamado</h1>
+    <p>Você tem certeza que deseja deletar o chamado "{{ object }}"?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Sim, deletar</button>
+    </form>
+    <a href="{% url 'chamado-list' %}">Cancelar</a>
+</body>
+</html>

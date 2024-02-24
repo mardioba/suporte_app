@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}
+Excluir Setor    
+{% endblock page_title %}
+
+{% block content %}
+<h1>Excluir Setor</h1>
+<p>Você tem certeza que deseja excluir o setor "{{ setor.nome }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar Exclusão</button>
+</form>
+{% endblock content %}
+

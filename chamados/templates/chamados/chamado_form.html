@@ -1,0 +1,56 @@
+<!-- templates/financas/adicionar_receita.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}
+    
+Adicionar Chamado
+{% endblock page_title %}
+    
+
+{% block content %}
+<div class="pai">
+    <div class="filho">
+        <table class="tabela-cor">
+            <form method="post" action="{% url 'chamado-create' %}">
+                {% csrf_token %}
+                <tr>
+                    <th colspan="2" style="text-align: center">
+                    <h2>Adicionar Chamado</h2><br>
+
+                </th>
+            </tr>
+                {% for field in form %}
+                <tr>
+                    <td style="text-align: right;font-weight: bold;font-style: italic;">{{ field.label_tag }}</td>
+                    <td style="text-align: left;">{{ field }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <button type="submit">Salvar</button>
+        </form>
+        <br>
+        <a href="{% url 'chamado-list' %}">Voltar para Lista de Chamados</a>
+    </div>
+</div>
+<script>
+    // Valor obtido do Django
+    var valorDjango = "{{ user.pk }}";
+
+    // Seleciona o elemento select
+    var selectElement = document.getElementById('id_usuario');
+
+    // Percorre as opções do select
+    for (var i = 0; i < selectElement.options.length; i++) {
+        // Se o valor da opção for igual ao valor do Django, define como selecionada
+        if (selectElement.options[i].value === valorDjango) {
+            selectElement.selectedIndex = i;
+            break;
+        }
+    }
+    var dataDjango = "{{ data }}";
+    document.getElementById("id_data").value = dataDjango
+</script>
+
+{% endblock content %}
+

@@ -1,0 +1,49 @@
+/* Reset CSS */
+
+/* Definir a margem e o preenchimento padrão como 0 */
+* {
+  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Adicionado para garantir que a largura e a altura dos elementos incluam a borda e o preenchimento */
+}
+
+/* Remover a decoração do texto para links */
+a {
+  text-decoration: none;
+}
+
+/* Resetar as listas */
+ul, ol {
+  list-style: none;
+}
+
+/* Remover as bordas padrão para elementos */
+img,
+iframe,
+abbr,
+acronym,
+audio,
+canvas,
+details,
+figcaption,
+figure,
+hgroup,
+menu,
+meter,
+progress,
+section,
+svg,
+video {
+  border: 0;
+}
+
+/* Remover a formatação padrão de fonte e tamanho */
+body {
+  background: #f8f9fa;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Adicione suas redefinições adicionais aqui */

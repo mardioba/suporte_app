@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Chamados Não Atendidos{% endblock page_title %}
+
+{% block content %}
+{% if existe_chamado_nao_atendido %}
+<h2 style="text-align: center;"><img src="{% static 'img/chamado.png' %}" alt=""> Chamados não atendidos</h2>
+<br>
+<table class="table table-striped" style="text-align: center;">
+    
+    <thead>
+        <tr>
+            <th  scope="col">Título</th>
+            <th  scope="col">Descrição</th>
+            <th  scope="col">Data</th>
+            <th  scope="col">Ação</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">  
+    {% for chamado in chamados_nao_atendidos %}
+    <tr>
+        <th scope="row">{{ chamado.titulo }}</th>
+        <td>{{ chamado.descricao }}</td>
+        <td>{{ chamado.data }}</td>
+        <td><a href="{% url 'atualizar_chamado' chamado.id %}">Atualizar</a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+</table>
+
+{% else %}
+<p>Todos os chamados foram atendidos.</p>
+{% endif %}
+{% endblock content %}

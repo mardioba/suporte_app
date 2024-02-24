@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}
+  PG Home
+{% endblock page_title %}
+
+{% block content %}
+  
+
+<p style="text-align: center;"><a href="{% url 'login' %}" class="btn btn-primary">Login</a></p>
+<div class="pai">
+  <div class="filho">
+    <img src="{% static 'img/logo.png' %}" alt="">
+  </div>
+</div>
+{% endblock content %}

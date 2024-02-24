@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+Lista de Chamados
+{% endblock page_title %}
+    
+
+{% block content %}
+    
+
+<h1>Lista de Chamados</h1>
+{% for chamado in object_list %}
+<ul>
+    <li><a href="{% url 'chamado-detail' chamado.pk %}">{{ chamado.titulo }}</a></li>
+    {% endfor %}
+</ul>
+<a href="{% url 'chamado-create' %}">Novo Chamado</a>
+{% endblock content %}
+
