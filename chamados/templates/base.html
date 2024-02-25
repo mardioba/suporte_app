@@ -47,7 +47,14 @@
                 <li><a class="dropdown-item" href="{% url 'cadastrar_setor' %}">Cadastro</a></li>
                 <li><a class="dropdown-item" href="{% url 'setor-list' %}">Listar</a></li>
               </ul>
-    
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Relatorio
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'chamados_por_mes' %}">Grafico - CH por Mês</a></li>
+                  <li><a class="dropdown-item" href="{% url 'tempo_medio_atendimento' %}">Tempo Médio atendimento</a></li>
+                </ul>
           </ul>
         </div>
       </div>

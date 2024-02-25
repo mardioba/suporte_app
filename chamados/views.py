@@ -1,13 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from .models import Setor, Usuario, Chamado
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm, ChamadoForm, SetorForm, AtualizarChamadoForm, Chamado_Editar_Form
+from django.utils import timezone
+from .forms import CustomUserCreationForm, ChamadoForm, SetorForm, AtualizarChamadoForm
 from django.contrib.auth import logout
 from datetime import datetime
-from django import forms
-from datetime import datetime
+from django.db.models import Count
+from django.db.models.functions import ExtractMonth, ExtractYear
+import locale
+from calendar import month_name  # Importe month_name aqui
+# Definindo o idioma local como português do Brasil
+locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+# from django import forms
+# from datetime import datetime
 ################# Chamados ################
 class ChamadoListView(ListView):
     model = Chamado
@@ -22,6 +30,7 @@ class ChamadoDetailView(DetailView):
         context['chamado_keys'] = chamado.__dict__.keys()  # Obtém as chaves do objeto
         return context
 
+@login_required(login_url='login')
 def ChamadoCreateView(request):
     data = datetime.now().strftime('%Y-%m-%d')
     hora_atual = datetime.now().strftime("%H:%M")
@@ -45,6 +54,8 @@ def ChamadoCreateView(request):
         context['form'] = form
         context['data'] = data
     return render(request, "chamados/chamado_form.html", context)
+
+@login_required(login_url='login')
 def chamado_edit(request, pk):
     chamado = get_object_or_404(Chamado, pk=pk)
     if request.method == 'POST':
@@ -56,11 +67,13 @@ def chamado_edit(request, pk):
         form = ChamadoForm(instance=chamado)
     return render(request, 'chamados/formularioeditar.html', {'form': form})
 
+@login_required(login_url='login')
 class ChamadoDeleteView(DeleteView):
     model = Chamado
     template_name = 'chamados/chamado_confirm_delete.html'
     success_url = reverse_lazy('chamado-list')
 
+@login_required(login_url='login')
 def atualizar_chamado(request, chamado_id):
     chamado = get_object_or_404(Chamado, pk=chamado_id)
     if request.method == 'POST':
@@ -75,12 +88,28 @@ def atualizar_chamado(request, chamado_id):
             form.initial['hora_atendimento'] = datetime.now().strftime('%H:%M')
             form.initial['data_atendimento'] = datetime.now().strftime('%Y-%m-%d')
     return render(request, 'chamados/atualizar_chamado.html', {'form': form})
+
+@login_required(login_url='login')
 def listar_chamados_nao_atendidos(request):
     chamados_nao_atendidos = Chamado.objects.filter(atendido=False)
     existe_chamado_nao_atendido = chamados_nao_atendidos.exists()
     return render(request, 'chamados/listar_chamados_nao_atendidos.html', {'chamados_nao_atendidos': chamados_nao_atendidos, 'existe_chamado_nao_atendido': existe_chamado_nao_atendido})
+################ RELATORIO ################
+def chamados_por_mes(request):
+    chamados_por_mes = Chamado.objects.annotate(mes=ExtractMonth('data'), ano=ExtractYear('data')).values('mes', 'ano').annotate(total=Count('id'))
+    meses_ano = [f"{month_name[mes['mes']]} {mes['ano']}" for mes in chamados_por_mes]
+    totals = [mes['total'] for mes in chamados_por_mes]
+    return render(request, 'chamados/chamados_por_mes.html', {'meses_ano': meses_ano, 'totals': totals})
 
-
+def tempo_medio_atendimento(request):
+    chamados_atendidos = Chamado.objects.filter(atendido=True).exclude(data_atendimento=None)
+    tempos_atendimento = []
+    for chamado in chamados_atendidos:
+        data_hora_chamado = timezone.make_aware(timezone.datetime.combine(chamado.data, chamado.hora_chamado))
+        data_hora_atendimento = timezone.make_aware(timezone.datetime.combine(chamado.data_atendimento, chamado.hora_atendimento))
+        tempo_atendimento = data_hora_atendimento - data_hora_chamado
+        tempos_atendimento.append(tempo_atendimento)
+    return render(request, 'chamados/tempo_medio_atendimento.html', {'tempos_atendimento': tempos_atendimento})
 
 class UsuarioListView(ListView):
     model = Usuario
@@ -114,6 +143,8 @@ class SetorListView(ListView):
 class SetorDetailView(DetailView):
     model = Setor
     template_name = 'setor/setor_detail.html'
+
+@login_required(login_url='login')
 def cadastrar_setor(request):
     if request.method == 'POST':
         form = SetorForm(request.POST)

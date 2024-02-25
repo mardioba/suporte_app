@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'chamados',
+    'django_extensions',
 ]
 AUTH_USER_MODEL = 'chamados.Usuario'
 

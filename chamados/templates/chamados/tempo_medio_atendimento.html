@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tempo Médio de Atendimento</title>
+</head>
+<body>
+    <h1>Tempo Médio de Atendimento</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Chamado</th>
+                <th>Tempo de Atendimento</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tempo_atendimento in tempos_atendimento %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ tempo_atendimento }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -11,7 +11,7 @@ urlpatterns = [
     path('chamados/new/', ChamadoCreateView, name='chamado-create'),
     path('chamados/<int:pk>/update/', chamado_edit, name='chamado-update'),
     # path('chamados/<int:pk>/update/', view_chamado, name='chamado-update'),
-    path('chamados/<int:pk>/delete/', ChamadoDeleteView.as_view(), name='chamado-delete'),
+    path('chamados/<int:pk>/delete/', ChamadoDeleteView, name='chamado-delete'),
     path('setores/', SetorListView.as_view(), name='setor-list'),
     path('setores/<int:pk>/', SetorDetailView.as_view(), name='setor-detail'),
     path('usuarios/', UsuarioListView.as_view(), name='usuario-list'),
@@ -27,4 +27,6 @@ urlpatterns = [
     path('setor/excluir/<int:setor_id>/', excluir_setor, name='excluir_setor'),
     path('chamado/atualizar/<int:chamado_id>/', atualizar_chamado, name='atualizar_chamado'),
     path('chamados-nao-atendidos/', listar_chamados_nao_atendidos, name='listar_chamados_nao_atendidos'),
+    path('chamados-por-mes/', chamados_por_mes, name='chamados_por_mes'),
+    path('tempo-medio-atendimento/', tempo_medio_atendimento, name='tempo_medio_atendimento'),
 ]
