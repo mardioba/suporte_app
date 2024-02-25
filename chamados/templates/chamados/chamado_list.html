@@ -9,11 +9,16 @@ Lista de Chamados
     
 
 <h1>Lista de Chamados</h1>
-{% for chamado in object_list %}
-<ul>
-    <li><a href="{% url 'chamado-detail' chamado.pk %}">{{ chamado.titulo }}</a></li>
+<table class="table table-striped">
+    {% for chamado in object_list %}
+    <tr><th>
+        <ul style="list-style-type: disc;">
+        <li><a href="{% url 'chamado-detail' chamado.pk %}">{{ chamado.titulo }}</a></li>
+    </th></tr>
     {% endfor %}
-</ul>
-<a href="{% url 'chamado-create' %}">Novo Chamado</a>
+    </ul>
+    <br>
+</table>
+<a href="{% url 'chamado-create' %}" class="btn btn-primary" style="margin-left: 10px;">Novo Chamado</a>
 {% endblock content %}
 

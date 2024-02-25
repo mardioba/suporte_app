@@ -3,11 +3,11 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Setor, Usuario, Chamado
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm, ChamadoForm, SetorForm, AtualizarChamadoForm
+from .forms import CustomUserCreationForm, ChamadoForm, SetorForm, AtualizarChamadoForm, Chamado_Editar_Form
 from django.contrib.auth import logout
 from datetime import datetime
-
-
+from django import forms
+from datetime import datetime
 ################# Chamados ################
 class ChamadoListView(ListView):
     model = Chamado
@@ -16,29 +16,45 @@ class ChamadoListView(ListView):
 class ChamadoDetailView(DetailView):
     model = Chamado
     template_name = 'chamados/chamado_detail.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        chamado = self.get_object()  # Obtém o objeto Chamado
+        context['chamado_keys'] = chamado.__dict__.keys()  # Obtém as chaves do objeto
+        return context
 
 def ChamadoCreateView(request):
     data = datetime.now().strftime('%Y-%m-%d')
+    hora_atual = datetime.now().strftime("%H:%M")
     context = {}
     if request.method == "POST":
         form = ChamadoForm(request.POST)
+        form.initial['hora_chamado'] = hora_atual
+        form.initial['data'] = datetime.now().strftime('%Y-%m-%d')
         user = request.user
         context = {
             'form': form,
-            'user': user
+            'user': user,
         }
         if form.is_valid():
             form.save()
             return redirect("chamado-list")
     else:
         form = ChamadoForm()
+        form.initial['hora_chamado'] = hora_atual
+        form.initial['data'] = datetime.now().strftime('%Y-%m-%d')
         context['form'] = form
         context['data'] = data
     return render(request, "chamados/chamado_form.html", context)
-class ChamadoUpdateView(UpdateView):
-    model = Chamado
-    template_name = 'chamados/chamado_form.html'
-    fields = ['titulo', 'descricao', 'usuario', 'setor', 'data', 'tecnico', 'atendido']
+def chamado_edit(request, pk):
+    chamado = get_object_or_404(Chamado, pk=pk)
+    if request.method == 'POST':
+        form = ChamadoForm(request.POST, instance=chamado)
+        if form.is_valid():
+            form.save()
+            return redirect('chamado-list')
+    else:
+        form = ChamadoForm(instance=chamado)
+    return render(request, 'chamados/formularioeditar.html', {'form': form})
 
 class ChamadoDeleteView(DeleteView):
     model = Chamado
@@ -54,13 +70,17 @@ def atualizar_chamado(request, chamado_id):
             return redirect('listar_chamados_nao_atendidos')
     else:
         form = AtualizarChamadoForm(instance=chamado)
+        # Se for a primeira vez que o formulário é exibido, defina o valor inicial da hora
+        if not request.POST:
+            form.initial['hora_atendimento'] = datetime.now().strftime('%H:%M')
+            form.initial['data_atendimento'] = datetime.now().strftime('%Y-%m-%d')
     return render(request, 'chamados/atualizar_chamado.html', {'form': form})
-
 def listar_chamados_nao_atendidos(request):
     chamados_nao_atendidos = Chamado.objects.filter(atendido=False)
     existe_chamado_nao_atendido = chamados_nao_atendidos.exists()
     return render(request, 'chamados/listar_chamados_nao_atendidos.html', {'chamados_nao_atendidos': chamados_nao_atendidos, 'existe_chamado_nao_atendido': existe_chamado_nao_atendido})
-    
+
+
 
 class UsuarioListView(ListView):
     model = Usuario
@@ -128,3 +148,20 @@ def excluir_setor(request, setor_id):
 
 def setor_existente(request):
     return render(request, 'setor/setor_existente.html')
+
+def view_chamado(request, pk):
+    chamado = get_object_or_404(Chamado, pk=pk)
+    if request.method == "POST":
+        form = ChamadoForm(request.POST, instance=chamado)
+        if form.is_valid():
+            form.save()
+            return redirect("chamado-list")
+    else:
+        form = ChamadoForm(instance=chamado)
+    return render(request, "chamados/chamado_form.html", {'form': form})
+    chamado = Chamado.objects.get(pk=pk)
+    data = chamado.data.strftime('%Y-%m-%d')#YYYY-MM-DD
+    form = ChamadoForm(instance=chamado)
+    context = {'chamado': chamado, 'data': data}
+    context['form'] = form
+    return render(request, 'chamados/chamado_edit.html', context)

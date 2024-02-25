@@ -50,7 +50,14 @@ Adicionar Chamado
     }
     var dataDjango = "{{ data }}";
     document.getElementById("id_data").value = dataDjango
+    // Pegando a hora enviada pela view Django
+    var dataDjango = "{{ data }}";
+    // Converter a data para o formato HH:MM:SS
+    var dataFormatada = new Date(dataDjango).toLocaleTimeString();
+    // Definir o valor no campo time
+    document.getElementById("id_data").value = dataFormatada;
 </script>
+
 
 {% endblock content %}
 

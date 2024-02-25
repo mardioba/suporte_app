@@ -1,0 +1,83 @@
+<-- chamados/chamado_edit.html -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        
+    </head>
+    <body>
+        <title>Formulario de Edição</title>
+    </head>
+  <body>
+      <div class="container">
+        <h1>Formulario de Edição</h1>
+	<form method="post" action="{% url 'chamado-update' chamado.id %}">
+    {% csrf_token %}
+    <input type="text" name="id" id="id_id" value="{{ chamado.id }}" style="display: none;">
+    <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col"><label for="titulo">Titulo</label></th>
+      <th scope="col"><input type="text" name="titulo" id="id_titulo" value="{{ chamado.titulo }}"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row"><label for="descricao">Descrição</label></th>
+      <td><textarea id="id_descricao" rows="5">{{ chamado.descricao }}</textarea></td>
+    </tr>
+    <tr>
+      <th scope="row"><label for="setor">Setor</label></th>
+      <td><select name="setor" id="id_setor">
+        {% for setor in setores %}
+        <option value="{{ setor.id }}" {% if setor.id == chamado.setor.id %} selected {% endif %}>{{ setor.nome }}</option>
+    {% endfor %}
+      </select></td>
+    </tr>
+    <tr>
+        <th scope="row"><label for="data">Data:</label></th>
+        <td><input type="date" name="data" id="id_data"></td>
+      </tr>
+      <tr>
+        <th scope="row"><label for="usauario">Usuario:</label></th>
+        <td><select name="setor" id="id_setor">
+            {% for usuario in usuarios %}
+            <option value="{{ usuario.id }}" {% if usuario.id == chamado.usuario.id %} selected {% endif %}>{{ usuario }}</option>
+        {% endfor %}
+          </select></td>
+      </tr>
+    <tr>
+    	<th colspan="2">
+    <button type="submit">Salvar Alterações</button>		
+    	</th>
+    </tr>
+  </tbody>
+</table>
+</form>
+</div>
+Usuarios {{ chamado.usuario }}
+<script>
+    var DataJango = '{{ chamado.data|date:"Y-m-d" }}';
+    document.getElementById('id_data').value = DataJango
+    // Obtenha o nome do usuário do Django
+    var nomeUsuario = '{{ chamado.usuario }}';
+
+    // Obtenha todas as opções do select
+    var options = document.getElementById('id_usuario').options;
+
+    // Itere sobre as opções e defina a selecionada com base no nome do usuário
+    for (var i = 0; i < options.length; i++) {
+        if (options[i].text === nomeUsuario) {
+            options[i].selected = true;
+            break; // Saia do loop depois de encontrar a correspondência
+        }
+    }
+</script>
+	
+</body>
+</html>

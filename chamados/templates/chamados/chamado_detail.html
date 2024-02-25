@@ -4,7 +4,7 @@
 {% block page_title %}Chamado Detalhes{% endblock page_title %}
 
 {% block content %}
-    
+<div class="container">
 <table style="border: 1px solid black;margin-left: 10px;">
     <tr style="border: 1px solid black;">
         <th colspan="2" style="text-align: center; border: 1px solid black;"><h2>Chamado Detalhes</h2></th>
@@ -15,6 +15,7 @@
     <tr style="border: 1px solid black;"><th style="border: 1px solid black;">Usuário</th><td style="padding-left: 10px;">{{ object.usuario }}</td></tr>
     <tr style="border: 1px solid black;"><th style="border: 1px solid black;">Setor</th><td style="padding-left: 10px;">{{ object.setor }}</td></tr>
     <tr style="border: 1px solid black;"><th style="border: 1px solid black;">Data</th><td style="padding-left: 10px;">{{ object.data }}</td></tr>
+    <tr style="border: 1px solid black;"><th style="border: 1px solid black;">Horario</th><td style="padding-left: 10px;">{{ object.hora_chamado }}</td></tr>
     {% if object.tecnico == None %}<tr><th></th><td></td></tr>{% else %}<tr><th>Técnico</th><td style="padding-left: 10px;">{% endif %}</td></tr>
     <tr style="border: 1px solid black;"><th style="border: 1px solid black;">Atendido</th><td style="padding-left: 10px;">{% if object.atendido %} Sim {% else %} Não {% endif %}</td></tr>
     <tr style="border: 1px solid black;"><th style="border: 1px solid black;text-align: center;">
@@ -26,6 +27,6 @@
     </th>
 </tr>
 </table>
-
+</div>
 {% endblock content %}
 

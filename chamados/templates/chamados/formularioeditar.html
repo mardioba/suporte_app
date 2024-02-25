@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Editar Chamado{% endblock page_title %}
+
+{% block content %}
+<div class="container">
+<form method="post">
+  {% csrf_token %}
+  <table class="table table-striped">
+    <tr><td colspan="2"><h1>Editar Chamado</h1></td></tr>
+    {% for field in form %}
+      <tr>
+        <td>{{ field.label_tag }}</td>  <!-- Renderiza o label do campo -->
+        <td>{{ field }}</td>            <!-- Renderiza o input do campo -->
+      </tr>
+    {% endfor %}
+  </table>
+  <button type="submit">Salvar</button>
+</form>
+</div>
+{% endblock content %}

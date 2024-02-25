@@ -19,10 +19,11 @@ class Chamado(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='chamados')
     setor = models.ForeignKey(Setor, on_delete=models.CASCADE)
     data = models.DateField()
+    hora_chamado = models.TimeField(null=True, blank=True)
     data_cadastro = models.DateTimeField(auto_now_add=True)
     tecnico = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='chamados_atendidos', null=True, blank=True)
     atendido = models.BooleanField(default=False)
     data_atendimento = models.DateField(null=True, blank=True)
-
+    hora_atendimento = models.TimeField(null=True, blank=True)
     def __str__(self):
         return self.titulo

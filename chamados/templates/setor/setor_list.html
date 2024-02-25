@@ -1,16 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Setores</title>
-</head>
-<body>
-    <h1>Lista de Setores</h1>
-    <ul>
-        {% for setor in object_list %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Setores{% endblock page_title %}
+
+{% block content %}
+<h1 style="text-align: center;"><img src="{% static 'img/setor32.png' %}" alt=""> Lista de Setores</h1>
+<table class="table table-striped">
+    
+    {% for setor in object_list %}
+    <tr><th>
+            <ul style="list-style-type: disc;">
             <li><a href="{% url 'setor-detail' setor.pk %}">{{ setor.nome }}</a></li>
+        </th>
+        </tr>
         {% endfor %}
-    </ul>
-</body>
-</html>
+        
+    </table>
+</ul>
+{% endblock content %}
